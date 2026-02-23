@@ -1,0 +1,12 @@
+__pycache__
+
+# intermediate results / cache:
+inference-yolo11x/
+optical_flow.pkl
+
+# outputs:
+submission.csv
+output*.csv
+
+# models:
+yolo*.pt

@@ -1,0 +1,17 @@
+services:
+  carla-simulator:
+    command: ["/bin/bash", "./CarlaUE4.sh", "-quality=epic"]
+    restart: no
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: "host"
+
+  carla-client:
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XAUTHORITY=/root/.Xauthority  # or use $XAUTHORITY if passed in
+      - CARLA_HOST_NAME=127.0.0.1  # Must be present due to network mode set to host
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix  # X11 socket
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority  # authentication cookie
+    network_mode: "host"

@@ -1,0 +1,96 @@
+template:
+  "map_name": "Town03"  # Select from https://carla.readthedocs.io/en/latest/core_map/#carla-maps
+  "display_size": [ 1920, 1080 ]  # Camera display size
+  "runtime_secs": 300  # How long the simulation will run (differs from the length of the simulation -- depends on HW)
+  "number_of_vehicles": 200  # How many vehicles are tried to be spawned (each map has a finite number of spawn places). They will have autopilot.
+  "number_of_pedestrians": 40  # How many vehicles are tried to be spawned. They will have autopilot.
+  "max_distance": 100  # Max distance from camera. Filter bboxes beyond.
+  "min_pixels": 80  # Filter bboxes with smaller pixel area.
+  "simulation_fps": 20  # Number of simulated fps.
+  "frames_per_image": 1  # Capture frequency, integer from [1, inf).
+  "camera_fov": 90  # Camera field of view
+  "omit_bikes": False  # Vehicles by default contain bicycles and motorcycles. Omit them or not.
+
+  "hooks": [  # Generate custom actors and their behaviour using hooks.
+    {
+      "name": "spawn_vehicle_hook",  # Hook name, see /src/client/core/hooks.
+      "frame": 1,  # Frame when the hook is called.
+      "repeat": True,  # Call repeatedly after current_frame % frame == 0.
+      "kwargs": {  # Hook parameters.
+        "add_collision_sensor": True,  # Add collision sensor to the vehicle to evaluate collisions with other actors or environment.
+        "blueprint_ids": ["vehicle.audi.tt", "vehicle.dodge.charger_2020", "vehicle.lincoln.mkz_2020", "vehicle.mercedes.coupe", "vehicle.tesla.model3"], # Randomly select a vehicle blueprint, https://carla.readthedocs.io/en/latest/catalogue_vehicles/.
+        "coordinates": {  # Coordinates where the vehicle will be spawned. Must ensure that there will nothing which would block the space, or the object won't spawn.
+          "location": {'x': 60.0, 'y': 20.0, 'z': 14},  # Default values are 0.
+          "rotation": {'pitch': 2.72, 'yaw': -180.0, 'roll': 0.0}  # Default values are 0.
+        },
+        "location_scale": 0,  # Randomly gitter the spawn location. Scale changes the severity of gitter.
+        "rotation_scale": 0,  # Randomly gitter the spawn location. Scale changes the severity of gitter.
+        "autopilot": True,  # Sets the autopilot. Exclusive to vehicle_control (must be False to enable manual vehicle control). Default is False.
+        "vehicle_control": {  # optional, see https://carla.readthedocs.io/en/latest/python_api/#carla.VehicleControl for options
+          "throttle": 1.0,
+          "steer": 0.035,
+          "brake": 0.0,
+          "hand_brake": False,
+        },
+      },
+    },
+    {
+      "name": "spawn_pedestrian_hook",  # Spawn a pedestrian actor
+      "frame": 1,
+      "kwargs": {
+        "blueprint_ids": ["walker.pedestrian.0003", "walker.pedestrian.0016", "walker.pedestrian.0021"],  # Randomly select blueprint, https://carla.readthedocs.io/en/latest/catalogue_pedestrians/.
+        "controller_id": "controller.walker",  # Carla supports multiple controller. Default is controller.ai.walker which selects a walk path automatically. Controller.walker enables manual handling of path.
+        "coordinates": {
+          "location": {'x': -48.85, 'y': 20.5, 'z': 12.0},
+          "rotation": {'pitch': 0.0, 'yaw': 0.0, 'roll': 0.0}
+        },
+        "location_scale": 0.1,
+        "target_location": {'x': 55.0, 'y': 20.5, 'z': 12}, # The pedestrian will walk in a straight line in the target location direction (won't stop when the location is reached).
+        "speed": 0.03  # Speed of the pedestrian
+      },
+    },
+    {
+      "name": "spawn_prop_hook",  # Spawn a prop
+      "frame": 1,
+      "kwargs": {
+        "blueprint_ids": ["static.prop.container"],  # See catalogue https://carla.readthedocs.io/en/latest/catalogue_props/.
+        "coordinates": {
+          "location": {'x': -81.44, 'y': -20.33, 'z': 0.10},
+          "rotation": {'pitch': -8.12, 'yaw': -0.14, 'roll': 0.0}
+        },
+        "location_scale": 0.1,
+        "rotation_scale": 15.0,
+      },
+    },
+  ]
+
+# Used to enhance the template and generate multiple variants
+# Define multiple sensor configurations
+sensors:
+  - {
+    "location": {'x': -67.49, 'y': -28.34, 'z': 11.78},  # Sensor location in the simulation
+    "rotation": {'pitch': -24.36, 'yaw': 120.0, 'roll': 0.0},  # Sensor rotation in the simulation
+    "static_camera": True,  # If the camera is static. If False, then a EGO car is created and the camera is relatively attached to it.
+  }
+  - {
+    "location": { "y": 5, "z": 10.5 },
+    "rotation": { "pitch": -9, "yaw": 190, "roll": 0 },
+    "static_camera": False
+  }
+
+# Manually specify weather conditions from which to create variants.
+# Use ["ClearNoon", "ClearSunset", "WetCloudySunset", "ClearNight", "HardRainNoon",] as default
+# More info: https://carla.readthedocs.io/en/latest/core_world/#weather
+weathers:
+  - {
+    "precipitation": 95.0,
+    "precipitation_deposits": 70,
+    "wind_intensity": 50,
+    "sun_altitude_angle": 45,
+    "cloudiness": 100,
+    "wetness": 80,
+    "fog_density": 100,
+    "fog_distance": 0.0,
+    "fog_falloff": 1.10,
+    "scattering_intensity": 0.5,
+  }

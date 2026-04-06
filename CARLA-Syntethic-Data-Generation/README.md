@@ -1,11 +1,12 @@
-# CARLA Versatile Scenario Generation
+# CARLA Scenario Generation
 This project aims to automatically synthesize traffic datasets with unusual events using the [CARLA Simulator](https://carla.readthedocs.io/en/latest/start_introduction/) and its Python API.
 
-### Key features
+## Key features
 * Generate bounding boxes with classes of simulated objects, collision information, and possibly object contours and lidar data.
 * Define arbitrary simulation scenario without a need to change code.
 * Simulate different conditions like map, weather, sensor location, and specific actor behavior automatically.
-* Run multiple scenarios sequentially, robustly handle exceptions, and restart the simulation after each scenario to ensure the same conditions.
+* Run multiple scenarios sequentially, robustly handle exceptions, and restart the simulation after each scenario to ensure the same conditions. 
+* Generate traffic accident videos from captured frames and visualize annotations.
 
 ## Requirements
 * 80-90GB of free space minimum (CARLA image + Extra maps).
@@ -15,8 +16,9 @@ This project aims to automatically synthesize traffic datasets with unusual even
 * To access GPU from Docker follow the official [documentation](https://docs.docker.com/engine/containers/resource_constraints/#gpu). 
 
 
-
 ## Run Application
+Application is divided into 2 containers: CARLA simulator build from official image and Python Client that controls the simulation and produces frame captures, annotations, and videos.
+The client also controls the simulator container, restarts it after each simulated scenario, and stops it after all scenarios are completed.
 
 ### Development 
 Run the following command to build and start the application in the interactive / development mode.
@@ -31,7 +33,7 @@ Run the following command to build and run in production / windowless mode (no o
 docker compose -f docker-compose.yml up --build
 ```
 
-### Carla Only
+### CARLA Only
 Run this command to build and start CARLA simulator only without the client application. This is useful when you want to set up a new scenario (via helper notebooks etc.).
 ```bash
 docker compose -f docker-compose.manual.tml up --build
@@ -39,24 +41,24 @@ docker compose -f docker-compose.manual.tml up --build
 
 ## General flow
 1. Update runtime settings in __.env__ file.
-2. Prepare or select a scenario in __src/client/scenarios__.
-3. Client's __main.py__ script functions over multiple scenario configs. For each scenario a _ScenariosMaker_ is called which creates multiple variants in a grid (mainly different weather or sensor settings). Then a _CarlaScenarioRunner_ is called to run different variants independently. Carla simulation is restarted after each variant.
-4. Run single scenario variant using _CarlaSynthesizer_:
-   - Run simulation in the [synchronous mode](https://carla.readthedocs.io/en/latest/adv_traffic_manager/#synchronous-mode).
-   - Create main actor (optional) - EGO car cases.
-   - Setup sensors, vehicles, and pedestrians.
-   - Manually spawn or destroy additional actors (vehicles, pedestrian, and props) using hooks in the configuration file to create unusual situations (e.g. a person running on a highway). Add simple controllers to them or collision sensors to capture their collisions with other actors or the environment. 
-   - Project bounding box, collision or lidar information into the sensor plane, handle edge-cases and capture it.
-   - Save the sensor data (RGB images, lidar or collision data, images with projected annotations) for frames in specified frequency (every n-th frame). Use _CarlaAnnotator_ to save the data in Ultralytics (preferred) or COCO format.
-5. Simulated data are saved in __out__ directory.
-6. Other useful scripts are available in __src/notebooks__ and __src/scripts__ directories. For instance, use _generate_videos_from_images.ipynb_ to generate videos from captured images (works for Ultralytics-style annotations). 
+2. Prepare or select a scenario in __src/client/scenarios__. When preparing new scenario, run the CARLA only build and use __notebooks/1.0-Create-new-scenario.ipynb__ to retrieve information from the simulator and put it into the new scenario config. See the __src/client/scenarios/EXAMPLE_SCENARIO.yaml__ for explanation.
+3. Client's __main.py__ script runs over multiple scenario configs. For each scenario a _ScenariosMaker_ is called which creates multiple variants in a grid (mainly different weather or sensor settings). Then a _CarlaScenarioRunner_ is called to run different variants independently. Carla simulation is restarted after each variant.
+4. This runs a single scenario variant using _CarlaSynthesizer_:
+   - It runs a simulation in the [synchronous mode](https://carla.readthedocs.io/en/latest/adv_traffic_manager/#synchronous-mode).
+   - Optionally, creates a main actor - EGO car cases.
+   - Setups sensors, vehicles, and pedestrians.
+   - Manually spawns or destroy additional actors (vehicles, pedestrian, and props) using hooks in the configuration file to creates unusual situations (e.g. a person running on a highway). Adds autopilot or manual controllers to them or collision sensors to capture their collisions with other actors or the environment. To see the available hooks or to create a new hook, use __src/client/hooks.py__.
+   - Using different sensors, it projects bounding boxes, segmentations into the 2D camera space, captures collision data, or saves LiDAR information.
+   - The sensor data (RGB images, lidar or collision data, images with projected annotations) are saved for frames in specified frequency (every n-th frame). Use _CarlaAnnotator_ to save the data in a specific format (ultralytics as default, coco). 
+5. Simulated data are saved in __runs/out__ directory.
+6. Use notebooks available in __src/notebooks__ to process simulated data or to create a synthetic dataset as ACCIDENT.  For instance, use _2.0-Generate-videos-from-frames-manually.ipynb_ to generate videos from captured images (works for Ultralytics-style annotations). 
 
 ### Scenario options
 - See __src/client/scenarios/EXAMPLE_SCENARIO.yaml__ to view all supported options.
 
 
 ## Local CARLA installation (optional)
-It is possible to exchange the _carla-simulator_ container for a locally running simulator instance.
+It is possible to exchange the _carla-simulator_ container for a locally running simulator program.
 In such case:
 * Remove __carla-simulator__ from the docker compose config.
 * Change __CARLA_HOST_NAME__ environment variable for a correct localhost IP address (127.0.0.1).

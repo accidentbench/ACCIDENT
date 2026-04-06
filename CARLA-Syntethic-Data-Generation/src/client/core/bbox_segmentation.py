@@ -272,9 +272,6 @@ def get_minimal_bbox(binary_mask: np.ndarray) -> np.ndarray:
 
 class ClientSideBoundingBoxes(object):
     # Copyright (c) 2019 Aptiv
-    #
-    # This work is licensed under the terms of the MIT license.
-    # For a copy, see <https://opensource.org/licenses/MIT>.
     """
     This is a module responsible for creating 3D bounding boxes and drawing them
     client-side on pygame surface.

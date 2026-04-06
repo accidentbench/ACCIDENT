@@ -10,8 +10,34 @@ template:
   "frames_per_image": 1  # Capture frequency, integer from [1, inf).
   "camera_fov": 90  # Camera field of view
   "omit_bikes": False  # Vehicles by default contain bicycles and motorcycles. Omit them or not.
+  "change_line_percentage": 0.0 # 0-1, chance of actors changing their lane. The actors can collide with other actors when changing lines.
 
   "hooks": [  # Generate custom actors and their behaviour using hooks.
+    {
+      "name": "spawn_vehicle_hook",  # Hook name, see /src/client/core/hooks.
+      "frame": 1,  # Frame when the hook is called.
+      "repeat": True,  # Call repeatedly after current_frame % frame == 0.
+      "kwargs": { # Hook parameters.
+        "add_collision_sensor": True,  # Add collision sensor to the vehicle to evaluate collisions with other actors or environment.
+        "blueprint_ids": [ "vehicle.audi.tt", "vehicle.dodge.charger_2020", "vehicle.lincoln.mkz_2020", "vehicle.mercedes.coupe", "vehicle.tesla.model3" ], # Randomly select a vehicle blueprint, https://carla.readthedocs.io/en/latest/catalogue_vehicles/.
+        "coordinates": {
+          "spawn_point": 70,  # Spawn point index.
+          "location_scaling": { "y": 0.3, "x": 0.2 }  # Randomly gitter the spawn location. Scale changes the severity of gitter.
+        },
+        "control": {  # Control parameters.
+          "autopilot": {  # Autopilot parameters.
+            "path": [
+              83, 98, 112, 113  # A path to follow produced from spawn point indices
+            ],
+            "ignore_vehicles": 100.0,  # Autopilot ignores other vehicle actors.
+            "ignore_signs": 100.0,  # Autopilot ignores signs.
+            "ignore_lights": 100.0,  # Autopilot ignores traffic lights.
+            "ignore_walkers": 0.0,  # Autopilot ignores pedestrians.
+            "desired_speed": 29  # Desired speed of the actors.
+          },
+        }
+      }
+    },
     {
       "name": "spawn_vehicle_hook",  # Hook name, see /src/client/core/hooks.
       "frame": 1,  # Frame when the hook is called.
@@ -25,12 +51,13 @@ template:
         },
         "location_scale": 0,  # Randomly gitter the spawn location. Scale changes the severity of gitter.
         "rotation_scale": 0,  # Randomly gitter the spawn location. Scale changes the severity of gitter.
-        "autopilot": True,  # Sets the autopilot. Exclusive to vehicle_control (must be False to enable manual vehicle control). Default is False.
-        "vehicle_control": {  # optional, see https://carla.readthedocs.io/en/latest/python_api/#carla.VehicleControl for options
-          "throttle": 1.0,
-          "steer": 0.035,
-          "brake": 0.0,
-          "hand_brake": False,
+        "control": {
+          "vehicle_control": {  # Manual vehicle control, optional, see https://carla.readthedocs.io/en/latest/python_api/#carla.VehicleControl for options
+            "throttle": 1.0,
+            "steer": 0.035,
+            "brake": 0.0,
+            "hand_brake": False,
+          }
         },
       },
     },
@@ -79,7 +106,7 @@ sensors:
   }
 
 # Manually specify weather conditions from which to create variants.
-# Use ["ClearNoon", "ClearSunset", "WetCloudySunset", "ClearNight", "HardRainNoon",] as default
+# Use weathers: ["ClearNoon", "ClearSunset", "WetCloudySunset", "ClearNight", "HardRainNoon",] as default
 # More info: https://carla.readthedocs.io/en/latest/core_world/#weather
 weathers:
   - {

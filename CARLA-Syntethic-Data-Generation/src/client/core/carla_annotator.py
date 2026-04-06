@@ -12,7 +12,6 @@ from typing import Any, Dict, List, Set, Tuple
 
 import numpy as np
 from joblib import Parallel, delayed
-from plotly.figure_factory.utils import annotation_dict_for_label
 
 from .ioutils import (generate_mp4_cv2, generate_mp4_ffmpeg, load_json, load_yaml, read_txt,
                       save_json, save_txt, save_yaml)
@@ -46,6 +45,7 @@ def normalize_bbox(bbox_xywh: tuple, display_size: tuple) -> tuple:
 
 
 def denormalize_bbox(normalized_bbox_xywh: tuple, display_size: tuple):
+    """Normalized (center_x, center_y, width, height) to (image_center_x, image_center_y, width, height)."""
     display_x, display_y = display_size
     _x, _y, _width, _height = normalized_bbox_xywh
 
@@ -58,6 +58,7 @@ def denormalize_bbox(normalized_bbox_xywh: tuple, display_size: tuple):
 
 
 def convert(obj):
+    """Convert numpy object to python object."""
     if isinstance(obj, np.ndarray) or isinstance(obj, np.matrix):
         return obj.tolist()
     if isinstance(obj, np.generic):
@@ -66,6 +67,7 @@ def convert(obj):
 
 
 def to_serializable(d):
+    """Convert numpy objects to python objects, recursively."""
     if isinstance(d, dict):
         return {k: to_serializable(v) for k, v in d.items()}
     elif isinstance(d, list):
@@ -75,7 +77,7 @@ def to_serializable(d):
 
 
 class CarlaAnnotator(ABC):
-    """Create annotations in different styles."""
+    """Create annotations in different styles (YOLO, COCO)."""
 
     def __init__(
         self,
@@ -109,9 +111,11 @@ class CarlaAnnotator(ABC):
         time.sleep(1)
 
     def add_collision_data(self, collision_data: List[Dict[str, Any]], timestamp: str):
+        """Save collision bounding box and colliding objects ids."""
         self.collision_history[timestamp] = to_serializable(collision_data)
 
     def add_sensor_data(self, sensor_data: Dict[str, Any], timestamp: str):
+        """Save camera sensor data (location, rotation)."""
         self.sensor_history[timestamp] = to_serializable(sensor_data)
 
     @abstractmethod
@@ -207,6 +211,7 @@ class UltralyticsAnnotator(CarlaAnnotator):
         self.sensor_history = {}
 
     def generate_video_version(self, image_format: str = "png"):
+        """Generate video from saved frame annotations."""
         transfer_scenario_to_video_ultralytics(
             scenario_dir=osp.dirname(self.exp_dir),
             image_format=image_format,
@@ -349,7 +354,7 @@ def read_ultralytics_annotation_file(
     annotation_file: str,
     display_size: Tuple[int, int],
 ):
-    """"""
+    """Read annotation file in Ultralytics format."""
     annotations = []
     annotation_lines = read_txt(annotation_file)
     for line in annotation_lines:
@@ -364,6 +369,7 @@ def aggregate_ultralytics_annotations(
     annotation_dir: str,
     display_size: Tuple[int, int],
 ) -> Dict[str, Dict[str, List[dict]]]:
+    """Read multiple annotation files in Ultralytics format."""
     aggregated_annotations = defaultdict(dict)
 
     annotation_files = glob.glob(osp.join(annotation_dir, "*.txt"))
@@ -390,6 +396,7 @@ def aggregate_ultralytics_annotations(
 def get_video_dir(
     scenario_dir: str,
 ) -> str:
+    """Helper function to get video directory."""
     return osp.join(scenario_dir + "_video")
 
 
@@ -398,6 +405,7 @@ def transfer_scenario_to_video_ultralytics(
     image_format: str = "png",
     frame_rate: float = None,
 ):
+    """Produce video from a saved scenario annotations in Ultralytics format."""
     video_dir = get_video_dir(scenario_dir)
     os.makedirs(video_dir, exist_ok=True)
 
@@ -426,6 +434,7 @@ def process_experiment_to_video(
     remove_no_collisions: bool = True,
     remove_original_sim_data: bool = False,
 ):
+    """Process scenario to video."""
     annotation_dir = osp.join(exp_dir, "labels", "train")
     image_dir = osp.join(exp_dir, "images", "train")
 
@@ -482,6 +491,7 @@ def process_experiment_to_video(
 def remove_no_collision_sims(
     video_exp_dir: str,
 ):
+    """Remove experiments without collision data."""
     video_image_dir = osp.join(video_exp_dir, "images", "train")
     video_annotation_dir = osp.join(video_exp_dir, "labels", "train")
 
@@ -513,6 +523,7 @@ def remove_no_collision_sims(
 def remove_simulated_images(
     image_dir: str,
 ):
+    """Removed saved frames from simulation."""
     for path in os.listdir(image_dir):
         if any(path.endswith(suffix) for suffix in IMAGE_FORMATS):
             os.remove(osp.join(image_dir, path))

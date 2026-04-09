@@ -1,90 +1,105 @@
 # CARLA Scenario Generation
-This project aims to automatically synthesize traffic datasets with unusual events using the [CARLA Simulator](https://carla.readthedocs.io/en/latest/start_introduction/) and its Python API.
 
-## Key features
-* Generate bounding boxes with classes of simulated objects, collision information, and possibly object contours and lidar data.
-* Define arbitrary simulation scenario without a need to change code.
-* Simulate different conditions like map, weather, sensor location, and specific actor behavior automatically.
-* Run multiple scenarios sequentially, robustly handle exceptions, and restart the simulation after each scenario to ensure the same conditions. 
-* Generate traffic accident videos from captured frames and visualize annotations.
+This repository provides an automated framework for synthesizing traffic datasets, specifically focusing on **unusual traffic events and accidents**. By leveraging the [CARLA Simulator](https://carla.readthedocs.io/en/latest/start_introduction/) and its Python API, users can generate diverse, annotated datasets using custom simulation configurations.
 
-## Requirements
-* 80-90GB of free space minimum (CARLA image + Extra maps).
-* GPU with min 6GB VRAM.
-* [Docker](https://www.docker.com/).
-* [Docker Compose](https://docs.docker.com/compose/).
-* To access GPU from Docker follow the official [documentation](https://docs.docker.com/engine/containers/resource_constraints/#gpu). 
+---
 
+## 🚀 Key Features
 
-## Run Application
-Application is divided into 2 containers: CARLA simulator build from official image and Python Client that controls the simulation and produces frame captures, annotations, and videos.
-The client also controls the simulator container, restarts it after each simulated scenario, and stops it after all scenarios are completed.
+* **Automated Dataset Synthesis:** Generate comprehensive annotations including 2D/3D bounding boxes, object classes, instance segmentation (contours), and LiDAR point clouds.
+* **Dynamic Scenario Configuration:** Define complex traffic scenarios via YAML configuration files without modifying the core codebase.
+* **Environmental Variability:** Automatically iterate through various maps, weather conditions, sensor configurations, and actor behaviors.
+* **Robust Execution Pipeline:** Sequentially runs multiple scenarios with automated exception handling and simulator restarts to ensure clean state transitions.
+* **Post-Processing Tools:** Provided utilities for generating traffic accident videos from captured frames and visualizing ground-truth annotations.
 
-### Development 
-Run the following command to build and start the application in the interactive / development mode.
+---
+
+## 💻 System Requirements
+
+| Requirement     | Minimum Specification                                                                           |
+|:----------------|:------------------------------------------------------------------------------------------------|
+| **Storage**     | 80–90 GB (CARLA image + additional maps)                                                        |
+| **GPU**         | NVIDIA GPU with at least 6GB VRAM                                                               |
+| **Software**    | [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)          |
+| **GPU Drivers** | [NVIDIA Container Toolkit](https://docs.docker.com/engine/containers/resource_constraints/#gpu) |
+
+---
+
+## 🛠 Run Application
+
+The architecture consists of two main docker containers:
+1.  **CARLA Simulator:** The CARLA server build from an official image.
+2.  **Python Client:** The controller logic that manages the simulation, captures frames, generates annotations, and handles the orchestration of scenarios.
+
+### 1. Development Mode (Interactive)
+Use this mode for debugging or visual verification. It launches the CARLA window and a `pygame` overlay showing real-time annotations.
 ```bash
 docker compose up --build
 ```
-The docker-compose.yml is automatically overridden with variables from docker-compose.override.yml, which specify the interactive behavior (opens CARLA window and pygame window with annotations in the main display).
 
-### Production 
-Run the following command to build and run in production / windowless mode (no overrides).
+### 2. Production Mode (Headless)
+Optimized for data generation. It runs in windowless mode to save resources.
 ```bash
 docker compose -f docker-compose.yml up --build
 ```
 
-### CARLA Only
-Run this command to build and start CARLA simulator only without the client application. This is useful when you want to set up a new scenario (via helper notebooks etc.).
+### 3. Manual / Scenario Setup
+Launches the CARLA simulator alone. This is ideal when using helper notebooks to define new spawn points or scenario parameters.
 ```bash
-docker compose -f docker-compose.manual.tml up --build
+docker compose -f docker-compose.manual.yml up --build
 ```
 
-## General flow
-1. Update runtime settings in __.env__ file.
-2. Prepare or select a scenario in __src/client/scenarios__. When preparing new scenario, run the CARLA only build and use __notebooks/1.0-Create-new-scenario.ipynb__ to retrieve information from the simulator and put it into the new scenario config. See the __src/client/scenarios/EXAMPLE_SCENARIO.yaml__ for explanation.
-3. Client's __main.py__ script runs over multiple scenario configs. For each scenario a _ScenariosMaker_ is called which creates multiple variants in a grid (mainly different weather or sensor settings). Then a _CarlaScenarioRunner_ is called to run different variants independently. Carla simulation is restarted after each variant.
-4. This runs a single scenario variant using _CarlaSynthesizer_:
-   - It runs a simulation in the [synchronous mode](https://carla.readthedocs.io/en/latest/adv_traffic_manager/#synchronous-mode).
-   - Optionally, creates a main actor - EGO car cases.
-   - Setups sensors, vehicles, and pedestrians.
-   - Manually spawns or destroy additional actors (vehicles, pedestrian, and props) using hooks in the configuration file to creates unusual situations (e.g. a person running on a highway). Adds autopilot or manual controllers to them or collision sensors to capture their collisions with other actors or the environment. To see the available hooks or to create a new hook, use __src/client/hooks.py__.
-   - Using different sensors, it projects bounding boxes, segmentations into the 2D camera space, captures collision data, or saves LiDAR information.
-   - The sensor data (RGB images, lidar or collision data, images with projected annotations) are saved for frames in specified frequency (every n-th frame). Use _CarlaAnnotator_ to save the data in a specific format (ultralytics as default, coco). 
-5. Simulated data are saved in __runs/out__ directory.
-6. Use notebooks available in __src/notebooks__ to process simulated data or to create a synthetic dataset as ACCIDENT.  For instance, use _2.0-Generate-videos-from-frames-manually.ipynb_ to generate videos from captured images (works for Ultralytics-style annotations). 
+---
 
-### Scenario options
-- See __src/client/scenarios/EXAMPLE_SCENARIO.yaml__ to view all supported options.
+## 🔄 Workflow & General Flow
 
+1. **Scenario Definition:** Select or create a configuration in `src/client/scenarios`. Use `notebooks/1.0-Create-new-scenario.ipynb` while the simulator is running to extract coordinates or actor paths. Refer to `EXAMPLE_SCENARIO.yaml` for syntax details.
+2. **Configuration:** Update the `.env` file to specify which scenarios to run and adjust global runtime settings.
+3. **Orchestration (`main.py`):**
+    - **ScenarioMaker:** Generates a grid of scenario variants (e.g., same event, but different weather/sensors).
+    - **CarlaScenarioRunner:** Executes each variant independently, restarting the CARLA container between runs to prevent memory leaks.
+4. **Simulation & Synthesis (`CarlaSynthesizer`):**
+    - Operates in **Synchronous Mode** for precise frame-to-annotation alignment.
+    - Spawns the actors (vehicles, pedestrians, etc.) and configures the sensor suite.
+    - Utilizes **Hooks** (`src/client/hooks.py`) to trigger unusual events (e.g., a vehicle with specific route, pedestrians crossing highways or sudden braking).
+    - Captures and saves data (RGB, LiDAR, Collisions) at a specified frequency.
+    - **CarlaAnnotator** formats data (default: **Ultralytics/YOLO**, optional: **COCO**).
+5. **Output:** Results are stored in the `runs/out` directory.
+6. **Post-Processing:** Use `src/notebooks/2.0-Generate-videos-from-frames-manually.ipynb` to compile captured frames into video files.
 
-## Local CARLA installation (optional)
-It is possible to exchange the _carla-simulator_ container for a locally running simulator program.
-In such case:
-* Remove __carla-simulator__ from the docker compose config.
-* Change __CARLA_HOST_NAME__ environment variable for a correct localhost IP address (127.0.0.1).
-* Change __USE_DOCKER__ environment variable to False.
+---
 
-Follow the official [documentation](https://carla.readthedocs.io/en/latest/start_quickstart/).
+## 🔌 Local CARLA Installation (Optional)
 
-## Know issues
-In the 0.9.15, Carla has a bug where GPU does not deallocate memory properly, leading to a crash due to malloc. This is mainly an issue when running many iteration (creating new objects, clients, etc.).
-- https://github.com/carla-simulator/carla/issues/6068
+To use a local CARLA installation instead of the Docker container:
+1.  Remove the `carla-simulator` service from the `docker-compose` configuration.
+2.  Set `USE_DOCKER=False` in your `.env` file.
+3.  Set `CARLA_HOST_NAME=127.0.0.1`.
+4.  Ensure your local simulator is running before starting the client.
 
-Because of this, the Carla has to be restarted after each scenario/iteration, which requires the client application to have access to the host docker socket.
+---
 
-## Contributing (Pull Request)
+## ⚠️ Known Issues
 
-Follow these steps to add new feature to the repository:
-1. Create a new branch with name `[YOUR_NAME]/[SHORT_FEATURE_DESCRIPTION]`.
-2. Add your changes to the branch.
-3. Run quality checks using `black`, `isort`, `flake8`:
-   ```bash
-   black --check .  # checks code formatting according to PEP 8 standard
-   isort --check .  # checks if the package imports are sorted alphabetically and separated into sections by type
-   flake8 .  # checks if the code is valid
-   ```
-   Code can be formated automatically using [tox](https://tox.wiki/en/4.27.0/):
-   ```bash
-   tox run -e lint
-   ```
-4. Create a Pull Request to branch `dev`.
+**Memory Deallocation (v0.9.15):**
+CARLA 0.9.15 has a known bug where GPU memory is not properly deallocated after repeated object spawning or client reconnections. This leads to `malloc` crashes.
+* **Solution:** The system is designed to restart the CARLA container after every scenario. For this to function, the client container must have access to the **host docker socket**.
+
+---
+
+## 🤝 Contributing
+
+We welcome improvements! Please follow these steps:
+1.  Create a branch: `[your_name]/[feature_description]`.
+2.  Implement changes.
+3.  **Linting & Quality Assurance:**
+    ```bash
+    # Manual checks
+    black --check .
+    isort --check .
+    flake8 .
+
+    # Or auto-format using tox
+    tox run -e lint
+    ```
+4.  Open a Pull Request against the `dev` branch.

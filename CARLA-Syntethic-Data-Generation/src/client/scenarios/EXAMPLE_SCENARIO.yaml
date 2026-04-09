@@ -10,6 +10,7 @@ template:
   "frames_per_image": 1  # Capture frequency, integer from [1, inf).
   "camera_fov": 90  # Camera field of view
   "omit_bikes": False  # Vehicles by default contain bicycles and motorcycles. Omit them or not.
+  "omit_spawn_points": [338, 355, 276, 290, 299, 306, 320, 325, 330, 351, 358, 380, ]  # Spawn points to omit during vehicle spawn. Useful for custom vehicle paths so it does not collide to a randomly spawned object.
   "change_line_percentage": 0.0 # 0-1, chance of actors changing their lane. The actors can collide with other actors when changing lines.
 
   "hooks": [  # Generate custom actors and their behaviour using hooks.

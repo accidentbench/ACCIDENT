@@ -1,0 +1,16 @@
+services:
+  carla-simulator:
+    build:
+      context: ./src/carla
+      dockerfile: Dockerfile
+    container_name: carla-simulator
+    command: ["/bin/bash", "./CarlaUE4.sh", "-quality=epic"]
+    restart: no
+    runtime: nvidia
+    ports:
+    - 2000-2002:2000-2002
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=${DISPLAY}
+    network_mode: "host"

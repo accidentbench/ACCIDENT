@@ -1,0 +1,31 @@
+services:
+  carla-simulator:
+    build:
+      context: ./src/carla
+      dockerfile: Dockerfile
+    container_name: carla-simulator
+    command: ["/bin/bash", "./CarlaUE4.sh", "-RenderOffScreen", "-quality=epic"]
+    runtime: nvidia
+    restart: on-failure
+    ports:
+    - "2000-2002:2000-2002"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+
+  carla-client:
+    build:
+      context: ./src/client
+      dockerfile: Dockerfile
+    container_name: carla-client
+    env_file:
+      - .env
+    restart: no
+    volumes:
+      - ./runs:/runs
+      - ./src/client/scenarios:/src/client/scenarios
+      # Workaround to restart carla container
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount the host's Docker socket
+    command: ["uv", "run", "main.py"]
+    depends_on:
+      - carla-simulator

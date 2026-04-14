@@ -1,0 +1,21 @@
+[project]
+name = "accident"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.1.0",
+    "joblib>=1.5.3",
+    "numpy>=2.4.1",
+    "opencv-python>=4.13.0.90",
+    "pandas>=3.0.0",
+    "pillow>=12.1.0",
+    "pip>=25.3",
+    "pyyaml>=6.0.3",
+    "ruptures>=1.1.10",
+    "scikit-learn>=1.8.0",
+    "torch>=2.10.0",
+    "tqdm>=4.67.1",
+    "ultralytics>=8.4.11",
+]

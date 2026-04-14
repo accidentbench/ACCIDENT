@@ -135,6 +135,6 @@ dmypy.json
 .pyre/
 
 tmp/
-#out/
+out/
 archive/
 datasets/

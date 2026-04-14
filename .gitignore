@@ -1,6 +1,1 @@
 __pycache__
-
-# baseline intermediate results / cache:
-baselines/inference-yolo11x/
-baselines/inference-yolo11x.true/
-baselines/optical-flow/

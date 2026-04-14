@@ -12,4 +12,4 @@
 
 ### CARLA-Synthetic-Data-Generation
 
-This folder contains the all information and source-code to produce synthetic traffic accident datasets using CARLA simulator. See the [README](CARLA-Syntethic-Data-Generation/README.md) for more details.
+This folder contains the all information and source-code to produce synthetic traffic accident datasets using CARLA simulator. See the [README](CARLA-Synthetic-Data-Generation/README.md) for more details.

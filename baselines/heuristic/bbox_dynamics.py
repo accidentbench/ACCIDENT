@@ -20,6 +20,7 @@ USAGE
 import argparse
 import json
 import math
+import sys
 from itertools import combinations
 from pathlib import Path
 from typing import Generator, cast
@@ -32,9 +33,13 @@ import torch
 from tqdm import tqdm
 from ultralytics import YOLO
 
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
+from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
 from metrics import print_temporal_accuracy, print_spatial_accuracy
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent.parent
 
 
 # ---------------------------------------------------------------------------
@@ -215,8 +220,8 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=Path,
-        default=SCRIPT_DIR / "../dataset/real_videos",
-        help="Path to the dataset root directory (default: ../dataset/real_videos)",
+        default=default_dataset_path(REPO_ROOT),
+        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
     )
     parser.add_argument(
         "--detections-dir",
@@ -267,7 +272,7 @@ def main():
     )
     args = parser.parse_args()
 
-    dataset_path: Path = args.dataset_path
+    dataset_path = resolve_dataset_path(args.dataset_path)
     detections_dir: Path = args.detections_dir
     detections_dir.mkdir(parents=True, exist_ok=True)
 

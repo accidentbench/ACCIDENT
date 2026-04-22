@@ -1,5 +1,7 @@
 # CARLA Scenario Generation
 
+This directory contains the synthetic data generation pipeline for the ACCIDENT project.
+
 This repository provides an automated framework for synthesizing traffic datasets, specifically focusing on **unusual traffic events and accidents**. By leveraging the [CARLA Simulator](https://carla.readthedocs.io/en/latest/start_introduction/) and its Python API, users can generate diverse, annotated datasets using custom simulation configurations.
 
 ---
@@ -26,6 +28,8 @@ This repository provides an automated framework for synthesizing traffic dataset
 ---
 
 ## 🛠 Run Application
+
+From `generation/carla-simulation`:
 
 The architecture consists of two main docker containers:
 1.  **CARLA Simulator:** The CARLA server build from an official image.
@@ -65,7 +69,7 @@ docker compose -f docker-compose.manual.yml up --build
     - Captures and saves data (RGB, LiDAR, Collisions) at a specified frequency.
     - **CarlaAnnotator** formats data (default: **Ultralytics/YOLO**, optional: **COCO**).
 5. **Output:** Results are stored in the `runs/out` directory.
-6. **Post-Processing:** Use `src/notebooks/2.0-Generate-videos-from-frames-manually.ipynb` to compile captured frames into video files.
+6. **Post-Processing:** Use `notebooks/2.0-Generate-videos-from-frames-manually.ipynb` to compile captured frames into video files.
 
 ---
 

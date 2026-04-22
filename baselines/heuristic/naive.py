@@ -12,14 +12,19 @@ USAGE
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
+from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
 from metrics import LABELS_PATH, print_temporal_accuracy, print_spatial_accuracy
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent.parent
 
 
 def main():
@@ -30,12 +35,12 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=Path,
-        default=SCRIPT_DIR / "../dataset/real_videos",
-        help="Path to the dataset root directory (default: ../dataset/real_videos)",
+        default=default_dataset_path(REPO_ROOT),
+        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
     )
     args = parser.parse_args()
 
-    dataset_path: Path = args.dataset_path
+    dataset_path = resolve_dataset_path(args.dataset_path)
     true_df = pd.read_csv(dataset_path / LABELS_PATH)
 
     # ---- Naive baseline ----

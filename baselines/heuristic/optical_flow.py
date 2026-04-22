@@ -19,6 +19,7 @@ USAGE
 
 import argparse
 import pickle
+import sys
 from pathlib import Path
 
 import cv2
@@ -28,9 +29,13 @@ import ruptures as rpt
 from joblib import Parallel, delayed
 from tqdm import tqdm
 
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
+from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
 from metrics import print_temporal_accuracy
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent.parent
 
 
 # ---------------------------------------------------------------------------
@@ -174,8 +179,8 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=Path,
-        default=SCRIPT_DIR / "../dataset/real_videos",
-        help="Path to the dataset root directory (default: ../dataset/real_videos)",
+        default=default_dataset_path(REPO_ROOT),
+        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
     )
     parser.add_argument(
         "--optical-flow-path",
@@ -208,7 +213,7 @@ def main():
     )
     args = parser.parse_args()
 
-    dataset_path: Path = args.dataset_path
+    dataset_path = resolve_dataset_path(args.dataset_path)
     optical_flow_path: Path = args.optical_flow_path
 
     video_paths = list((dataset_path / "videos").iterdir())

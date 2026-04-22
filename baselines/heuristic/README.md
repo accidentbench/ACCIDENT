@@ -35,7 +35,18 @@ Baseline solutions for the ACCIDENT competition: detecting **when**, **where**, 
 uv sync
 ```
 
-The dataset is expected at `../dataset/real_videos` relative to this directory (configurable via `--dataset-path`).
+The dataset is expected at `../../dataset/real_videos` relative to this directory by default, but every script also supports `--dataset-path`.
+
+Expected layout:
+
+```text
+dataset/
+  real_videos/
+    labels.csv
+    test_metadata.csv
+    videos/
+      ...
+```
 
 ## Running
 
@@ -43,17 +54,27 @@ All scripts resolve paths relative to their own location, so they work from any 
 
 ```bash
 # Naive baseline — instant, no GPU needed
-python heuristic_baselines/naive.py
+python baselines/heuristic/naive.py
 
 # Optical flow — CPU-heavy, parallelized with joblib
-python heuristic_baselines/optical_flow.py              # all videos
-python heuristic_baselines/optical_flow.py --take 5     # quick test
+python baselines/heuristic/optical_flow.py              # all videos
+python baselines/heuristic/optical_flow.py --take 5     # quick test
 
 # Bbox dynamics — GPU-heavy (YOLO inference)
-python heuristic_baselines/bbox_dynamics.py             # all videos
-python heuristic_baselines/bbox_dynamics.py --take 5    # quick test
+python baselines/heuristic/bbox_dynamics.py             # all videos
+python baselines/heuristic/bbox_dynamics.py --take 5    # quick test
 ```
 
 Each script prints evaluation metrics at the end. If the other baseline's output CSV is available, ensemble results are printed as well.
 
 Use `--help` on any script for full argument documentation.
+
+## Recommended first run
+
+If you are validating a fresh environment, use this order:
+
+1. `python baselines/heuristic/naive.py`
+2. `python baselines/heuristic/optical_flow.py --take 5`
+3. `python baselines/heuristic/bbox_dynamics.py --take 5`
+
+That sequence checks dataset paths first, then CPU processing, then the heavier GPU-dependent baseline.

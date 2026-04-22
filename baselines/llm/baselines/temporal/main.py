@@ -3,13 +3,18 @@
 import os
 import sys
 import argparse
+from pathlib import Path
 import torch
 import pandas as pd
 from tqdm import tqdm
 
-project_dir = '../..'
-sys.path.append(project_dir)
+SCRIPT_DIR = Path(__file__).resolve().parent
+LLM_BASELINES_DIR = SCRIPT_DIR.parents[1]
+PROJECT_ROOT = SCRIPT_DIR.parents[3]
+sys.path.append(str(PROJECT_ROOT))
+sys.path.append(str(LLM_BASELINES_DIR))
 
+from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
 from reasoning.utils import get_every_nth_frame
 from reasoning.qwen import QwenVLReasoner
 from reasoning.molmo import MolmoReasoner
@@ -75,12 +80,19 @@ def main():
         default=None,
         help="Optional iloc range START:END (e.g. 50:52)"
     )
+    parser.add_argument(
+        "--dataset-path",
+        type=Path,
+        default=default_dataset_path(PROJECT_ROOT),
+        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos from repo root)",
+    )
 
     args = parser.parse_args()
 
     # load data
-    df = pd.read_csv(f'{project_dir}/data/labels.csv')
-    df['video_path'] = f'{project_dir}/data/videos/' + df['path']
+    dataset_path = resolve_dataset_path(args.dataset_path)
+    df = pd.read_csv(dataset_path / "labels.csv")
+    df["video_path"] = (dataset_path / "videos").as_posix() + "/" + df["path"]
 
     # subset if requested
     if args.range is not None:

@@ -12,7 +12,7 @@ The experiments are organized into three stages:
 
 ## 1) Environment setup
 
-From `llm_baselines`:
+From `baselines/llm`:
 
 ```bash
 python -m venv .venv
@@ -24,28 +24,41 @@ pip install -r requirements.txt
 
 ## 2) Expected data layout
 
-Current code assumes project-relative paths (from baseline notebooks/scripts):
+The tracked temporal script accepts an explicit dataset root:
 
-- `../../data/labels.csv`
-- `../../data/videos/...`
+```bash
+python baselines/temporal/main.py --model qwen --dataset-path ../../dataset --range 0:10
+```
 
-Change the data path based on your project structure.
+Expected layout:
+
+```text
+dataset/
+  real_videos/
+    labels.csv
+    test_metadata.csv
+    videos/
+      ...
+```
+
+If your local copy lives elsewhere, pass `--dataset-path /absolute/path/to/real_videos`.
+
+Important: some of the notebooks may still contain project-specific paths saved in notebook cells. Before running them, search for path literals and update them to your local dataset location.
 
 ## 3) Recommended execution order
 
 ### Step A: Temporal reasoning
 
-Use script for full runs:
+Use the script for full or chunked runs:
 
 ```bash
-cd baselines/temporal
-python main.py --model qwen --range 0:676
-python main.py --model qwen --range 676:1352
-python main.py --model qwen --range 1352:2027
+python baselines/temporal/main.py --model qwen --dataset-path ../../dataset --range 0:676
+python baselines/temporal/main.py --model qwen --dataset-path ../../dataset --range 676:1352
+python baselines/temporal/main.py --model qwen --dataset-path ../../dataset --range 1352:2027
 
-python main.py --model molmo --range 0:676
-python main.py --model molmo --range 676:1352
-python main.py --model molmo --range 1352:2027
+python baselines/temporal/main.py --model molmo --dataset-path ../../dataset --range 0:676
+python baselines/temporal/main.py --model molmo --dataset-path ../../dataset --range 676:1352
+python baselines/temporal/main.py --model molmo --dataset-path ../../dataset --range 1352:2027
 ```
 
 Then open `baselines/temporal/analysis.ipynb` to:
@@ -78,6 +91,12 @@ These notebooks consume temporal (`temporal_pred.csv`) and spatial outputs (`spa
 
 ---
 
+## Practical notes
+
+- The temporal script writes partial outputs to `baselines/temporal/results/<model>_temporal_parts/`.
+- Model weights are loaded from Hugging Face at runtime, so GPU availability and local model access need to be set up before long runs.
+- Start with a very small range such as `--range 0:10` to confirm that environment, paths, and model loading all work.
+
 ## 4) Outputs
 
 Main artifacts are stored under each baseline subfolder `results/`, for example:
@@ -90,4 +109,3 @@ Keep all generated files in local `results/` directories to preserve reproducibi
 These `results/` directories are treated as generated outputs and are not tracked in git.
 
 ---
-

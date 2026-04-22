@@ -1,0 +1,65 @@
+template:
+  "map_name": "Town10HD"
+  "display_size": [ 1920, 1080 ]
+  "runtime_secs": 150
+  "number_of_vehicles": 80
+  "number_of_pedestrians": 10
+  "max_distance": 100
+  "min_pixels": 80
+  "simulation_fps": 20
+  "frames_per_image": 1
+  "camera_fov": 90
+  "omit_bikes": False
+
+  "hooks": [
+    {
+      "name": "spawn_pedestrian_hook",
+      "frame": 1,
+      "kwargs": {
+        "blueprint_ids": ["walker.pedestrian.0003", "walker.pedestrian.0016", "walker.pedestrian.0021"],
+        "controller_id": "controller.walker",
+        "coordinates": {
+          "location": {'x': -41.73, 'y': 74.02, 'z': 1.0},
+          "rotation": {'pitch': 0.1, 'yaw': -177.02, 'roll': 0.0},
+        },
+        "location_scale": 0.0,
+        "target_location": {'x': -60.04, 'y': 74.04, 'z': 0.1},
+        "speed": 0.08,
+      },
+    },
+    {
+      "name": "spawn_vehicle_hook",
+      "frame": 1,
+      "kwargs": {
+        "add_collision_sensor": True,
+        "blueprint_ids": ["vehicle.mercedes.sprinter",],
+        "coordinates": {
+          "location": {'x': -45.6, 'y': 85.06, 'z': 1.0},
+          "rotation": {'pitch': 0.9, 'yaw': -90.0, 'roll': 0.0}
+        },
+        "location_scale": 0,
+        "control": {
+          "vehicle_control": {
+            "throttle": 1.0,
+            "steer": 0.0,
+          },
+        }
+      }
+    }
+  ]
+
+sensors: [
+  {
+    "location": {'x': -51.75, 'y': 39.23, 'z': 8.59},
+    "rotation": {'pitch': -15.93, 'yaw': 77.32, 'roll': 0.0},
+    "static_camera": True,
+  }
+]
+
+weathers: [
+  "ClearNoon",
+  "ClearSunset",
+  "WetCloudySunset",
+  "ClearNight",
+  "HardRainNoon",
+]

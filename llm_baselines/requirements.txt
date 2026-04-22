@@ -1,0 +1,38 @@
+# ===== Core ML (STRICT) =====
+torch==2.4.0
+torchvision==0.19.0
+
+transformers==4.53.2
+accelerate==1.9.0
+tokenizers==0.21.2
+
+# ===== Core ML (flexible) =====
+einops>=0.8.1
+safetensors>=0.5.3
+tensorboard>=2.19
+
+# ===== Data / Science =====
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+matplotlib>=3.8
+seaborn>=0.13
+
+# ===== Computer Vision =====
+opencv-contrib-python>=4.9
+av>=15.0.0
+decord>=0.6.0
+
+# ===== NLP / HF ecosystem =====
+huggingface-hub>=0.33
+tqdm>=4.67
+regex>=2023.10
+
+# ===== Jupyter =====
+jupyterlab>=4.2
+ipykernel>=6.29
+ipywidgets>=8.1
+
+# ===== Misc =====
+requests>=2.31
+pyyaml>=6.0

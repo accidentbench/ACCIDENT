@@ -29,6 +29,14 @@ Baseline solutions for the ACCIDENT competition: detecting **when**, **where**, 
 **Shared utilities:**
 - `metrics.py` — evaluation metrics (temporal and spatial accuracy)
 
+## Setup
+
+```bash
+uv sync
+```
+
+The dataset is expected at `../dataset/real_videos` relative to this directory (configurable via `--dataset-path`).
+
 ## Running
 
 All scripts resolve paths relative to their own location, so they work from any working directory.
@@ -49,11 +57,3 @@ python heuristic_baselines/bbox_dynamics.py --take 5    # quick test
 Each script prints evaluation metrics at the end. If the other baseline's output CSV is available, ensemble results are printed as well.
 
 Use `--help` on any script for full argument documentation.
-
-## Setup
-
-```bash
-uv sync
-```
-
-The dataset is expected at `../dataset/real_videos` relative to this directory (configurable via `--dataset-path`).

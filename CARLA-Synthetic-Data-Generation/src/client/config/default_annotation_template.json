@@ -1,0 +1,20 @@
+{
+  "info": {
+    "description": "Synthetic dataset for traffic detection and segmentation",
+    "url": "not implemented",
+    "version": "1.0",
+    "year": 2024,
+    "contributor": "Hanzl",
+    "date_created": "FIXME"
+  },
+  "licenses": [
+    {
+      "url": "not implemented",
+      "id": 1,
+      "name": "not implemented"
+    }
+  ],
+  "images": [],
+  "annotations": [],
+  "categories": []
+}

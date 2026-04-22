@@ -1,0 +1,489 @@
+template:
+  "map_name": "Town06"
+  "display_size": [ 1920, 1080 ]
+  "runtime_secs": 900
+  "number_of_vehicles": 300
+  "number_of_pedestrians": 0
+  "max_distance": 160
+  "min_pixels": 80
+  "simulation_fps": 20
+  "frames_per_image": 1
+  "camera_fov": 90
+  "omit_spawn_points": [338, 355, 276, 290, 299, 306, 320, 325, 330, 351, 358, 380, ]
+  "omit_bikes": False
+  "change_line_percentage": 0.0
+
+  "hooks": [
+    {
+      "name": "spawn_vehicle_hook",
+      "frame": 1,
+      "kwargs": {
+        "add_collision_sensor": True,
+        "blueprint_ids": [
+          "vehicle.audi.tt",
+          "vehicle.lincoln.mkz_2020",
+          "vehicle.mercedes.coupe",
+          "vehicle.tesla.model3",
+          "vehicle.dodge.charger_2020",
+          "vehicle.dodge.charger_police_2020",
+          "vehicle.mercedes.sprinter",
+          "vehicle.audi.etron",
+          "vehicle.nissan.patrol_2021",
+          "vehicle.mini.cooper_s_2021",
+          "vehicle.mercedes.coupe_2020",
+          "vehicle.toyota.prius",
+          "vehicle.ford.crown",
+          "vehicle.bmw.grandtourer",
+          "vehicle.carlamotors.firetruck",
+          "vehicle.volkswagen.t2_2021"
+        ],
+        "coordinates": {
+          "location": {'x': 645.24, 'y': 52.57, 'z': 0.55},
+          "rotation": {'pitch': 0.0, 'yaw': -180, 'roll': 0.0},
+          "location_scaling": {"y": 0.1, "x": 0.2}
+        },
+        "control": {
+          "vehicle_control": {
+            "throttle": 0.45,
+            "steer": 0.0,
+          },
+        }
+      },
+    },
+    {
+      "name": "spawn_vehicle_hook",
+      "frame": 1,
+      "kwargs": {
+        "blueprint_ids": [
+          "vehicle.audi.tt",
+          "vehicle.lincoln.mkz_2020",
+          "vehicle.mercedes.coupe",
+          "vehicle.tesla.model3",
+          "vehicle.dodge.charger_2020",
+          "vehicle.dodge.charger_police_2020",
+          "vehicle.mercedes.sprinter",
+          "vehicle.audi.etron",
+          "vehicle.nissan.patrol_2021",
+          "vehicle.mini.cooper_s_2021",
+          "vehicle.mercedes.coupe_2020",
+          "vehicle.jeep.wrangler_rubicon",
+          "vehicle.ford.crown",
+          "vehicle.bmw.grandtourer",
+          "vehicle.carlamotors.firetruck",
+          "vehicle.volkswagen.t2_2021"
+        ],
+        "coordinates": {
+          "spawn_point": 338,
+          "location_scaling": {"y": 0.3, "x": 0.1}
+        },
+        "control": {
+          "autopilot": {
+            "path": [
+                380, 423, 382
+            ],
+            "ignore_vehicles": 0.0,
+            "ignore_signs": 100.0,
+            "ignore_lights": 100.0,
+            "ignore_walkers": 100.0,
+            "desired_speed": 35
+          },
+        }
+      }
+    },
+  ]
+
+sensors: [
+  {
+    "location": {'x': 608.4304809570312, 'y': 52.67434310913086, 'z': 50.77226638793945},
+    "rotation": {'pitch': -74.19666290283203, 'yaw': -180.3275909423828, 'roll': 3.19891095161438},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 604.0462036132812, 'y': 65.24005889892578, 'z': 50.061248779296875},
+    "rotation": {'pitch': -53.536128997802734, 'yaw': -146.44503784179688, 'roll': 3.240846633911133},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 598.118896484375, 'y': 76.37364196777344, 'z': 52.81929016113281},
+    "rotation": {'pitch': -60.172119140625, 'yaw': -122.33702087402344, 'roll': -1.4113800525665283},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 587.44921875, 'y': 84.053955078125, 'z': 54.676998138427734},
+    "rotation": {'pitch': -69.47513580322266, 'yaw': -100.68192291259766, 'roll': 3.1115195751190186},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 573.8443603515625, 'y': 81.93082427978516, 'z': 48.66825485229492},
+    "rotation": {'pitch': -72.13338470458984, 'yaw': -74.71205139160156, 'roll': 0.2598463296890259},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 562.0296630859375, 'y': 79.26331329345703, 'z': 49.113433837890625},
+    "rotation": {'pitch': -65.49478149414062, 'yaw': -74.21803283691406, 'roll': 4.113792419433594},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 553.776123046875, 'y': 69.55941009521484, 'z': 46.711090087890625},
+    "rotation": {'pitch': -49.19146728515625, 'yaw': -45.83794021606445, 'roll': 3.6912872791290283},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 548.8951416015625, 'y': 59.21633529663086, 'z': 47.49533462524414},
+    "rotation": {'pitch': -69.95646667480469, 'yaw': -10.901987075805664, 'roll': 2.6720709800720215},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 547.4686279296875, 'y': 46.4422492980957, 'z': 49.1289176940918},
+    "rotation": {'pitch': -53.91025161743164, 'yaw': 2.1226115226745605, 'roll': -2.1310508251190186},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 553.455322265625, 'y': 35.22415542602539, 'z': 47.91978073120117},
+    "rotation": {'pitch': -70.09840393066406, 'yaw': 23.254728317260742, 'roll': 2.9000556468963623},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 562.3045043945312, 'y': 26.776296615600586, 'z': 48.5372428894043},
+    "rotation": {'pitch': -59.27764892578125, 'yaw': 48.52064895629883, 'roll': -4.096283912658691},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 573.6507568359375, 'y': 24.51392936706543, 'z': 46.81716537475586},
+    "rotation": {'pitch': -72.26956939697266, 'yaw': 89.62763977050781, 'roll': 2.69277286529541},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 586.6696166992188, 'y': 21.324359893798828, 'z': 54.699134826660156},
+    "rotation": {'pitch': -73.5472412109375, 'yaw': 108.99322509765625, 'roll': -4.189554214477539},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 596.1364135742188, 'y': 31.519283294677734, 'z': 47.46478271484375},
+    "rotation": {'pitch': -66.9715576171875, 'yaw': 120.58003997802734, 'roll': -2.648763656616211},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 604.350830078125, 'y': 40.76015090942383, 'z': 50.584922790527344},
+    "rotation": {'pitch': -58.928714752197266, 'yaw': 163.1068115234375, 'roll': 3.0901432037353516},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 616.929443359375, 'y': 52.755489349365234, 'z': 37.60825729370117},
+    "rotation": {'pitch': -39.88314437866211, 'yaw': -182.4794158935547, 'roll': -1.9913498163223267},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 616.8302612304688, 'y': 70.81005859375, 'z': 41.6993522644043},
+    "rotation": {'pitch': -51.49434280395508, 'yaw': -157.91383361816406, 'roll': 4.693844795227051},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 605.5471801757812, 'y': 84.60352325439453, 'z': 40.63991165161133},
+    "rotation": {'pitch': -36.145484924316406, 'yaw': -120.16437530517578, 'roll': -3.427112102508545},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 590.9534301757812, 'y': 94.51041412353516, 'z': 41.27101135253906},
+    "rotation": {'pitch': -38.10584259033203, 'yaw': -104.46539306640625, 'roll': -2.440493583679199},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 572.5567016601562, 'y': 95.84754180908203, 'z': 41.172664642333984},
+    "rotation": {'pitch': -53.26799392700195, 'yaw': -82.0909652709961, 'roll': 3.16410231590271},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 557.346923828125, 'y': 86.98763275146484, 'z': 37.54139709472656},
+    "rotation": {'pitch': -38.01121520996094, 'yaw': -59.085304260253906, 'roll': -2.249319314956665},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 542.2282104492188, 'y': 78.21852111816406, 'z': 40.35961151123047},
+    "rotation": {'pitch': -43.19768142700195, 'yaw': -48.4074592590332, 'roll': -1.8283308744430542},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 532.30712890625, 'y': 62.16341018676758, 'z': 42.87437057495117},
+    "rotation": {'pitch': -43.443321228027344, 'yaw': -6.998493194580078, 'roll': 4.893365383148193},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 534.1961059570312, 'y': 43.93058395385742, 'z': 40.9616813659668},
+    "rotation": {'pitch': -37.776554107666016, 'yaw': 2.3748409748077393, 'roll': 0.1279328614473343},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 541.7359619140625, 'y': 27.350170135498047, 'z': 40.98555374145508},
+    "rotation": {'pitch': -51.73516082763672, 'yaw': 29.13389015197754, 'roll': 0.7682200074195862},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 553.9287109375, 'y': 12.45337963104248, 'z': 44.31891632080078},
+    "rotation": {'pitch': -54.36323165893555, 'yaw': 51.36904525756836, 'roll': -4.80946159362793},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 572.6168212890625, 'y': 8.694933891296387, 'z': 42.32242965698242},
+    "rotation": {'pitch': -45.92312240600586, 'yaw': 91.91329956054688, 'roll': 0.1027628555893898},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 589.3956909179688, 'y': 13.608558654785156, 'z': 38.4427490234375},
+    "rotation": {'pitch': -42.93413162231445, 'yaw': 110.37893676757812, 'roll': -2.29809832572937},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 603.8983764648438, 'y': 22.95930290222168, 'z': 37.62708282470703},
+    "rotation": {'pitch': -32.81666946411133, 'yaw': 139.2142333984375, 'roll': 3.5521326065063477},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 616.865234375, 'y': 35.14020919799805, 'z': 41.61771011352539},
+    "rotation": {'pitch': -53.738197326660156, 'yaw': 158.3325958251953, 'roll': 1.2945442199707031},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 632.0374755859375, 'y': 52.790565490722656, 'z': 28.962480545043945},
+    "rotation": {'pitch': -16.785629272460938, 'yaw': -178.78933715820312, 'roll': 0.9749801754951477},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 624.5465087890625, 'y': 73.7244644165039, 'z': 28.036069869995117},
+    "rotation": {'pitch': -16.56694793701172, 'yaw': -141.98719787597656, 'roll': -1.3743983507156372},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 613.9072265625, 'y': 93.4287338256836, 'z': 28.970766067504883},
+    "rotation": {'pitch': -16.39968490600586, 'yaw': -144.19789123535156, 'roll': 0.4166514277458191},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 592.253662109375, 'y': 100.111572265625, 'z': 26.13186264038086},
+    "rotation": {'pitch': -15.294408798217773, 'yaw': -101.86498260498047, 'roll': -0.2701338231563568},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 571.3409423828125, 'y': 101.88777160644531, 'z': 25.48057746887207},
+    "rotation": {'pitch': -21.924171447753906, 'yaw': -70.42300415039062, 'roll': 1.0786762237548828},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 549.8285522460938, 'y': 98.58726501464844, 'z': 28.039081573486328},
+    "rotation": {'pitch': -23.10548973083496, 'yaw': -60.62453842163086, 'roll': -2.9360945224761963},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 536.94384765625, 'y': 81.84542083740234, 'z': 25.34583282470703},
+    "rotation": {'pitch': -33.509273529052734, 'yaw': -39.783172607421875, 'roll': -3.1144986152648926},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 523.9129028320312, 'y': 64.5123291015625, 'z': 28.860380172729492},
+    "rotation": {'pitch': -37.16663360595703, 'yaw': -7.877009868621826, 'roll': -1.0189144611358643},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 521.82763671875, 'y': 40.73556900024414, 'z': 30.06169319152832},
+    "rotation": {'pitch': -19.990371704101562, 'yaw': 25.820846557617188, 'roll': 2.8700685501098633},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 531.9998779296875, 'y': 20.72471046447754, 'z': 28.77979278564453},
+    "rotation": {'pitch': -44.7368049621582, 'yaw': 42.77066421508789, 'roll': -0.1626962274312973},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 551.197509765625, 'y': 7.564614295959473, 'z': 27.465965270996094},
+    "rotation": {'pitch': -38.19529342651367, 'yaw': 69.49787902832031, 'roll': -2.4450924396514893},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 571.516845703125, 'y': -2.9150593280792236, 'z': 29.67188262939453},
+    "rotation": {'pitch': -27.92350196838379, 'yaw': 83.14801788330078, 'roll': -2.674957752227783},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 593.6209716796875, 'y': 1.5877727270126343, 'z': 28.637447357177734},
+    "rotation": {'pitch': -33.37001037597656, 'yaw': 118.49636840820312, 'roll': 3.480915069580078},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 610.604248046875, 'y': 15.240653038024902, 'z': 26.951303482055664},
+    "rotation": {'pitch': -16.29677963256836, 'yaw': 132.7672882080078, 'roll': 2.353846549987793},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 629.2130737304688, 'y': 30.002729415893555, 'z': 30.077068328857422},
+    "rotation": {'pitch': -19.801435470581055, 'yaw': 152.58242797851562, 'roll': -0.3856319785118103},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 636.2601318359375, 'y': 53.22291946411133, 'z': 13.507737159729004},
+    "rotation": {'pitch': -6.87067174911499, 'yaw': -174.91653442382812, 'roll': 0.4702951908111572},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 633.5308837890625, 'y': 77.93092346191406, 'z': 13.893706321716309},
+    "rotation": {'pitch': -2.1198782920837402, 'yaw': -168.10562133789062, 'roll': 4.2477216720581055},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 615.0169067382812, 'y': 94.841796875, 'z': 12.178791046142578},
+    "rotation": {'pitch': -1.3963152170181274, 'yaw': -142.1595458984375, 'roll': -0.19740813970565796},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 593.9596557617188, 'y': 105.03167724609375, 'z': 12.153010368347168},
+    "rotation": {'pitch': -17.328327178955078, 'yaw': -122.73603820800781, 'roll': 1.6623873710632324},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 571.2645874023438, 'y': 111.02458190917969, 'z': 12.89577865600586},
+    "rotation": {'pitch': -11.303775787353516, 'yaw': -97.09183502197266, 'roll': -2.4181835651397705},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 548.032958984375, 'y': 102.83309173583984, 'z': 12.48457145690918},
+    "rotation": {'pitch': -13.902692794799805, 'yaw': -67.00836181640625, 'roll': 0.49079689383506775},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 531.5013427734375, 'y': 85.66822052001953, 'z': 12.55885124206543},
+    "rotation": {'pitch': -3.5070905685424805, 'yaw': -38.55926513671875, 'roll': -0.3208623230457306},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 514.4612426757812, 'y': 66.01649475097656, 'z': 14.616931915283203},
+    "rotation": {'pitch': -21.339357376098633, 'yaw': -10.186490058898926, 'roll': 4.00443696975708},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 522.31787109375, 'y': 41.26058578491211, 'z': 12.368022918701172},
+    "rotation": {'pitch': -5.039078712463379, 'yaw': 1.9927501678466797, 'roll': 2.417781114578247},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  },
+  {
+    "location": {'x': 632.2346801757812, 'y': 27.766977310180664, 'z': 13.6314697265625},
+    "rotation": {'pitch': -17.021387100219727, 'yaw': 157.70831298828125, 'roll': 0.0016520177014172077},
+    "location_scaling": {'x': 1, 'y': 1, 'z': 1},
+    "rotation_scaling": {'pitch': 5, 'yaw': 5, 'roll': 2.5},
+    "static_camera": True,
+  }
+]
+
+weathers: [
+  "ClearNoon",
+  "ClearSunset",
+  "WetCloudySunset",
+  "ClearNight",
+  "HardRainNoon",
+]

@@ -35,17 +35,15 @@ Baseline solutions for the ACCIDENT competition: detecting **when**, **where**, 
 uv sync
 ```
 
-The dataset is expected at `../../dataset/real_videos` relative to this directory by default, but every script also supports `--dataset-path`.
+The dataset is expected at `../../dataset` relative to this directory by default, but every script also supports `--dataset-path`.
 
 Expected layout:
 
 ```text
 dataset/
+  metadata-real.csv
   real_videos/
-    labels.csv
-    test_metadata.csv
-    videos/
-      ...
+    ...
 ```
 
 ## Running

@@ -221,7 +221,7 @@ def main():
         "--dataset-path",
         type=Path,
         default=default_dataset_path(REPO_ROOT),
-        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
+        help="Path to dataset/ (default: ../../dataset)",
     )
     parser.add_argument(
         "--detections-dir",
@@ -276,7 +276,7 @@ def main():
     detections_dir: Path = args.detections_dir
     detections_dir.mkdir(parents=True, exist_ok=True)
 
-    video_paths = list((dataset_path / "videos").iterdir())
+    video_paths = list((dataset_path / "real_videos").iterdir())
     metadata_df = pd.read_csv(dataset_path / "metadata-real.csv", index_col="path")
 
     if args.take is not None:

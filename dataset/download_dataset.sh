@@ -121,16 +121,15 @@ REAL_SOURCE_DIR="$(find_real_source_dir)" || {
 }
 
 echo "Syncing real dataset into $REAL_TARGET_DIR"
-mkdir -p "$REAL_TARGET_DIR/videos"
-rsync -a --delete "$REAL_SOURCE_DIR"/ "$REAL_TARGET_DIR/videos"/
-[[ -f "$EXTRACT_DIR/metadata-real.csv" ]] && cp -f "$EXTRACT_DIR/metadata-real.csv" "$REAL_TARGET_DIR/"
+rsync -a --delete "$REAL_SOURCE_DIR"/ "$REAL_TARGET_DIR"/
+[[ -f "$EXTRACT_DIR/metadata-real.csv" ]] && cp -f "$EXTRACT_DIR/metadata-real.csv" "$DATASET_PARENT/"
 
 SYNTHETIC_SOURCE_DIR="$(find_source_dir synthetic_videos || true)"
 if [[ -n "$SYNTHETIC_SOURCE_DIR" ]]; then
   mkdir -p "$SYNTHETIC_TARGET_DIR"
   echo "Syncing synthetic dataset into $SYNTHETIC_TARGET_DIR"
   rsync -a --delete "$SYNTHETIC_SOURCE_DIR"/ "$SYNTHETIC_TARGET_DIR"/
-  [[ -f "$EXTRACT_DIR/metadata-synthetic.csv" ]] && cp -f "$EXTRACT_DIR/metadata-synthetic.csv" "$SYNTHETIC_TARGET_DIR/"
+  [[ -f "$EXTRACT_DIR/metadata-synthetic.csv" ]] && cp -f "$EXTRACT_DIR/metadata-synthetic.csv" "$DATASET_PARENT/"
 else
   echo "Synthetic dataset not found in the downloaded archive; skipping synthetic sync."
 fi

@@ -36,7 +36,7 @@ def main():
         "--dataset-path",
         type=Path,
         default=default_dataset_path(REPO_ROOT),
-        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
+        help="Path to dataset/ (default: ../../dataset)",
     )
     args = parser.parse_args()
 

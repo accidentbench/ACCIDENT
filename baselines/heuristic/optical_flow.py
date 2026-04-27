@@ -180,7 +180,7 @@ def main():
         "--dataset-path",
         type=Path,
         default=default_dataset_path(REPO_ROOT),
-        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
+        help="Path to dataset/ (default: ../../dataset)",
     )
     parser.add_argument(
         "--optical-flow-path",
@@ -216,7 +216,7 @@ def main():
     dataset_path = resolve_dataset_path(args.dataset_path)
     optical_flow_path: Path = args.optical_flow_path
 
-    video_paths = list((dataset_path / "videos").iterdir())
+    video_paths = list((dataset_path / "real_videos").iterdir())
     metadata_df = pd.read_csv(dataset_path / "metadata-real.csv", index_col="path")
 
     if args.take is not None:

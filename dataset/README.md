@@ -3,17 +3,20 @@
 This repository expects the baseline-ready dataset at:
 
 ```text
-dataset/real_videos/
+dataset/
   metadata-real.csv
-  videos/
+  annotation_classes.yaml
+  real_videos/
     ...
 ```
 
 The Kaggle archive may also include:
 
 ```text
-dataset/synthetic_videos/
-  ...
+dataset/
+  metadata-synthetic.csv
+  synthetic_videos/
+    ...
 ```
 
 ## Download from Kaggle
@@ -78,6 +81,6 @@ Then authenticate with either:
 
 - The downloaded archive is stored under `dataset/downloads/`.
 - The raw extracted files are stored under `dataset/raw/kaggle/`.
-- The normalized baseline-ready files live under `dataset/real_videos/`.
-- Synthetic files, when included in the Kaggle archive, are normalized under `dataset/synthetic_videos/`.
-- The baselines accept either `--dataset-path dataset` or `--dataset-path dataset/real_videos`.
+- The real videos and `metadata-real.csv` are normalized into `dataset/`.
+- Synthetic files, when included in the Kaggle archive, are normalized under `dataset/synthetic_videos/` with `metadata-synthetic.csv` at `dataset/`.
+- The baselines accept `--dataset-path dataset`.

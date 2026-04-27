@@ -1,13 +1,12 @@
 from pathlib import Path
 
 
-DATASET_DIRNAME = "real_videos"
 REQUIRED_FILES = ("metadata-real.csv",)
-REQUIRED_DIRS = ("videos",)
+REQUIRED_DIRS = ("real_videos",)
 
 
 def default_dataset_path(repo_root: Path) -> Path:
-    return repo_root / "dataset" / DATASET_DIRNAME
+    return repo_root / "dataset"
 
 
 def is_dataset_root(path: Path) -> bool:
@@ -22,12 +21,7 @@ def resolve_dataset_path(candidate: Path) -> Path:
     if is_dataset_root(candidate):
         return candidate
 
-    nested = candidate / DATASET_DIRNAME
-    if is_dataset_root(nested):
-        return nested
-
     raise FileNotFoundError(
-        "Could not find the ACCIDENT dataset layout. Expected either "
-        f"{candidate} or {nested} to contain {', '.join(REQUIRED_FILES)} "
-        f"and a {REQUIRED_DIRS[0]}/ directory."
+        f"Could not find the ACCIDENT dataset layout at {candidate}. "
+        f"Expected {', '.join(REQUIRED_FILES)} and a {REQUIRED_DIRS[0]}/ directory."
     )

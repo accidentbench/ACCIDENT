@@ -217,7 +217,7 @@ def main():
     optical_flow_path: Path = args.optical_flow_path
 
     video_paths = list((dataset_path / "videos").iterdir())
-    metadata_df = pd.read_csv(dataset_path / "test_metadata.csv", index_col="path")
+    metadata_df = pd.read_csv(dataset_path / "metadata-real.csv", index_col="path")
 
     if args.take is not None:
         video_paths = video_paths[: args.take]

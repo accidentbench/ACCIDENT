@@ -3,7 +3,7 @@ from typing import Iterable
 import pandas as pd
 import numpy as np
 
-LABELS_PATH = "labels.csv"
+LABELS_PATH = "metadata-real.csv"
 
 #################
 # TEMPORAL TASK #

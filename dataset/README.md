@@ -43,19 +43,11 @@ What that command does:
 - syncs the real split into `dataset/real_videos/`
 - syncs the synthetic split into `dataset/synthetic_videos/` when present
 
-Equivalent direct command:
-
-```bash
-bash dataset/download_dataset.sh
-```
-
 You can also see its built-in usage text with:
 
 ```bash
 bash dataset/download_dataset.sh --help
 ```
-
-By default the script downloads `picekl/accident` and prepares `dataset/real_videos`.
 
 ## Kaggle CLI requirements
 

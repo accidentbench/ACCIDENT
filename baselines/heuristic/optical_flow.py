@@ -31,7 +31,11 @@ from tqdm import tqdm
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
+from dataset.accident_dataset import (
+    default_dataset_root,
+    resolve_dataset_root,
+    get_dataset_paths,
+)
 from metrics import print_temporal_accuracy
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -179,7 +183,7 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=Path,
-        default=default_dataset_path(REPO_ROOT),
+        default=default_dataset_root(REPO_ROOT),
         help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
     )
     parser.add_argument(
@@ -213,11 +217,15 @@ def main():
     )
     args = parser.parse_args()
 
-    dataset_path = resolve_dataset_path(args.dataset_path)
+    dataset_root = resolve_dataset_root(args.dataset_path)
+    videos_dir, metadata_path = get_dataset_paths(
+        dataset_root, kind="real"
+    )
+
     optical_flow_path: Path = args.optical_flow_path
 
-    video_paths = list((dataset_path / "videos").iterdir())
-    metadata_df = pd.read_csv(dataset_path / "test_metadata.csv", index_col="path")
+    video_paths = list(videos_dir.iterdir())
+    metadata_df = pd.read_csv(metadata_path, index_col="path")
 
     if args.take is not None:
         video_paths = video_paths[: args.take]
@@ -228,11 +236,11 @@ def main():
         with open(optical_flow_path, "rb") as f:
             optical_flow = pickle.load(f)
     else:
-        print(f"Step 1: Processing {len(video_paths)} videos from {dataset_path}")
+        print(f"Step 1: Processing {len(video_paths)} videos from {videos_dir}")
         print(f"Target FPS: {args.target_fps} | Workers: {args.n_jobs}")
 
         optical_flow = Parallel(n_jobs=args.n_jobs)(
-            delayed(compute_optical_flow_scores_on_video)(path, dataset_path, args.target_fps)
+            delayed(compute_optical_flow_scores_on_video)(path, videos_dir, args.target_fps)
             for path in tqdm(video_paths)
         )
 
@@ -259,7 +267,7 @@ def main():
     # ---- Results ----
     results_df = pd.DataFrame([{"path": str(path), **i} for path, i in results.items()])
 
-    print_temporal_accuracy(results_df, dataset_path)
+    print_temporal_accuracy(results_df, metadata_df)
 
     # ---- Ensemble (if bbox dynamics results are available) ----
     bbox_dynamics_path = SCRIPT_DIR / "output_bbox_dynamics.csv"
@@ -269,7 +277,7 @@ def main():
         ensemble = bbox_dynamics.copy()
         of_times = results_df.set_index("path").loc[bbox_dynamics["path"]]["accident_time"].values
         ensemble["accident_time"] = (of_times + bbox_dynamics["accident_time"].values) / 2
-        print_temporal_accuracy(predictions=ensemble, dataset_path=dataset_path)
+        print_temporal_accuracy(predictions=ensemble, true_df=metadata_df)
     else:
         print(f"Skipping ensemble: {bbox_dynamics_path} not found.")
 

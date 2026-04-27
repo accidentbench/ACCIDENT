@@ -55,7 +55,7 @@ docker compose -f docker-compose.manual.yml up --build
 
 ---
 
-## 🔄 Workflow & General Flow
+## 🔄 General Workflow
 
 1. **Scenario Definition:** Select or create a configuration in `src/client/scenarios`. Use `notebooks/1.0-Create-new-scenario.ipynb` while the simulator is running to extract coordinates or actor paths. Refer to `EXAMPLE_SCENARIO.yaml` for syntax details.
 2. **Configuration:** Update the `.env` file to specify which scenarios to run and adjust global runtime settings.

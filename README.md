@@ -10,7 +10,6 @@ Start here if you are new to the repo:
 ## Repository map
 
 - [docs/](docs/) - onboarding and repository navigation docs
-- [scripts/](scripts/) - project-level helper scripts such as dataset download/setup
 - [baselines/](baselines/) - all baseline implementations, split into heuristic and LLM/VLM families
 - [generation/](generation/) - dataset generation pipelines, currently including CARLA-based synthesis
 - [dataset/](dataset/) - local dataset cache plus the normalized `real_videos/` layout used by the baselines

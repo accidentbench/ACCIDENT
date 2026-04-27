@@ -35,7 +35,11 @@ from ultralytics import YOLO
 
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
+from dataset.accident_dataset import (
+    default_dataset_root,
+    resolve_dataset_root,
+    get_dataset_paths,
+)
 from metrics import print_temporal_accuracy, print_spatial_accuracy
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -220,7 +224,7 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=Path,
-        default=default_dataset_path(REPO_ROOT),
+        default=default_dataset_root(REPO_ROOT),
         help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos)",
     )
     parser.add_argument(
@@ -272,18 +276,21 @@ def main():
     )
     args = parser.parse_args()
 
-    dataset_path = resolve_dataset_path(args.dataset_path)
+    dataset_root = resolve_dataset_root(args.dataset_path)
+    videos_dir, metadata_path = get_dataset_paths(
+        dataset_root, kind="real"
+    )
     detections_dir: Path = args.detections_dir
     detections_dir.mkdir(parents=True, exist_ok=True)
 
-    video_paths = list((dataset_path / "videos").iterdir())
-    metadata_df = pd.read_csv(dataset_path / "test_metadata.csv", index_col="path")
+    video_paths = list(videos_dir.iterdir())
+    metadata_df = pd.read_csv(metadata_path, index_col="path")
 
     if args.take is not None:
         video_paths = video_paths[: args.take]
 
     # ---- Step 1: YOLO detection ----
-    print(f"Step 1: Processing {len(video_paths)} videos from {dataset_path}")
+    print(f"Step 1: Processing {len(video_paths)} videos from {videos_dir}")
 
     tracker = Tracker(
         model_path=args.model_path,
@@ -303,7 +310,7 @@ def main():
             continue
 
         # Process video
-        predictions = tracker.process_video_file(filename, dataset_path)
+        predictions = tracker.process_video_file(filename, videos_dir)
 
         # Save predictions
         with open(predictions_path, "w") as f:
@@ -368,8 +375,8 @@ def main():
         [{"path": str(path), **i, "frame": None} for path, i in results.items()]
     ).drop(columns=["frame"])
 
-    print_temporal_accuracy(results_df, dataset_path)
-    print_spatial_accuracy(results_df, dataset_path)
+    print_temporal_accuracy(results_df, true_df=metadata_df)
+    print_spatial_accuracy(results_df, true_df=metadata_df)
 
     # ---- Ensemble (if optical flow results are available) ----
     optical_flow_csv_path = SCRIPT_DIR / "output_optical_flow.csv"
@@ -379,7 +386,7 @@ def main():
         ensemble = results_df.copy()
         of_times = optical_flow_df.set_index("path").loc[results_df["path"]]["accident_time"].values
         ensemble["accident_time"] = (of_times + results_df["accident_time"].values) / 2
-        print_temporal_accuracy(predictions=ensemble, dataset_path=dataset_path)
+        print_temporal_accuracy(predictions=ensemble, true_df=metadata_df)
     else:
         print(f"Skipping ensemble: {optical_flow_csv_path} not found.")
 

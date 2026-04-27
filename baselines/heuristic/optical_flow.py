@@ -258,6 +258,7 @@ def main():
 
     # ---- Results ----
     results_df = pd.DataFrame([{"path": str(path), **i} for path, i in results.items()])
+    results_df.to_csv(SCRIPT_DIR / "output_optical_flow.csv", index=False)
 
     print_temporal_accuracy(results_df, dataset_path)
 

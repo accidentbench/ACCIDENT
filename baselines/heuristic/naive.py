@@ -50,6 +50,7 @@ def main():
     # center of the video
     naive["center_x"] = 0.5
     naive["center_y"] = 0.5
+    naive.to_csv(SCRIPT_DIR / "output_naive.csv", index=False)
 
     print_temporal_accuracy(
         predictions=naive,

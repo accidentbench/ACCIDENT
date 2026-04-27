@@ -367,6 +367,7 @@ def main():
     results_df = pd.DataFrame(
         [{"path": str(path), **i, "frame": None} for path, i in results.items()]
     ).drop(columns=["frame"])
+    results_df.to_csv(SCRIPT_DIR / "output_bbox_dynamics.csv", index=False)
 
     print_temporal_accuracy(results_df, dataset_path)
     print_spatial_accuracy(results_df, dataset_path)

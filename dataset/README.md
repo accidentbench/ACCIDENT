@@ -4,8 +4,7 @@ This repository expects the baseline-ready dataset at:
 
 ```text
 dataset/real_videos/
-  labels.csv
-  test_metadata.csv
+  metadata-real.csv
   videos/
     ...
 ```

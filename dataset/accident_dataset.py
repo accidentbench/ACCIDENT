@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 DATASET_DIRNAME = "real_videos"
-REQUIRED_FILES = ("labels.csv", "test_metadata.csv")
+REQUIRED_FILES = ("metadata-real.csv",)
 REQUIRED_DIRS = ("videos",)
 
 

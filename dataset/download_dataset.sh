@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+trap 'echo "Interrupted." >&2; exit 130' INT TERM TSTP
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
@@ -97,8 +98,12 @@ require_command rsync
 
 mkdir -p "$DOWNLOADS_DIR" "$EXTRACT_DIR" "$REAL_TARGET_DIR"
 
-echo "Downloading Kaggle dataset $DATASET_SLUG"
-kaggle datasets download -d "$DATASET_SLUG" -p "$DOWNLOADS_DIR" -o
+if [[ -f "$ZIP_PATH" ]]; then
+  echo "Reusing existing archive at $ZIP_PATH (delete it to force re-download)"
+else
+  echo "Downloading Kaggle dataset $DATASET_SLUG"
+  kaggle datasets download -d "$DATASET_SLUG" -p "$DOWNLOADS_DIR"
+fi
 
 if [[ ! -f "$ZIP_PATH" ]]; then
   echo "Expected archive not found at $ZIP_PATH" >&2
@@ -116,13 +121,16 @@ REAL_SOURCE_DIR="$(find_real_source_dir)" || {
 }
 
 echo "Syncing real dataset into $REAL_TARGET_DIR"
-rsync -a --delete "$REAL_SOURCE_DIR"/ "$REAL_TARGET_DIR"/
+mkdir -p "$REAL_TARGET_DIR/videos"
+rsync -a --delete "$REAL_SOURCE_DIR"/ "$REAL_TARGET_DIR/videos"/
+[[ -f "$EXTRACT_DIR/metadata-real.csv" ]] && cp -f "$EXTRACT_DIR/metadata-real.csv" "$REAL_TARGET_DIR/"
 
 SYNTHETIC_SOURCE_DIR="$(find_source_dir synthetic_videos || true)"
 if [[ -n "$SYNTHETIC_SOURCE_DIR" ]]; then
   mkdir -p "$SYNTHETIC_TARGET_DIR"
   echo "Syncing synthetic dataset into $SYNTHETIC_TARGET_DIR"
   rsync -a --delete "$SYNTHETIC_SOURCE_DIR"/ "$SYNTHETIC_TARGET_DIR"/
+  [[ -f "$EXTRACT_DIR/metadata-synthetic.csv" ]] && cp -f "$EXTRACT_DIR/metadata-synthetic.csv" "$SYNTHETIC_TARGET_DIR/"
 else
   echo "Synthetic dataset not found in the downloaded archive; skipping synthetic sync."
 fi

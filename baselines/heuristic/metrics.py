@@ -3,7 +3,6 @@ from typing import Iterable
 import pandas as pd
 import numpy as np
 
-LABELS_PATH = "metadata-real.csv"
 
 #################
 # TEMPORAL TASK #
@@ -14,8 +13,7 @@ def temporal_accuracy_metric(predictions: Iterable[int], truth: Iterable[int], s
     scores = np.exp( -(predictions - truth)**2 / (2 * sigmas**2))
     return float(np.mean(scores))
 
-def print_temporal_accuracy(predictions: pd.DataFrame, dataset_path: Path, sigmas: list[float] = [1/2, 1, 2]):
-	true_df = pd.read_csv(dataset_path / LABELS_PATH)
+def print_temporal_accuracy(predictions: pd.DataFrame, true_df: pd.DataFrame, sigmas: list[float] = [1/2, 1, 2]):
 	merged = true_df.merge(
 			predictions,
 			on="path",
@@ -50,8 +48,7 @@ def spatial_accuracy_metric(predictions: Iterable[tuple[float, float]], truth: I
     return float(np.mean(scores))
 
 
-def print_spatial_accuracy(predictions: pd.DataFrame, dataset_path: Path, sigmas: list[float] = [1/2, 1, 2]):
-	true_df = pd.read_csv(dataset_path / LABELS_PATH)
+def print_spatial_accuracy(predictions: pd.DataFrame, true_df: pd.DataFrame, sigmas: list[float] = [1/2, 1, 2]):
 	merged = true_df.merge(
 			predictions,
 			on="path",

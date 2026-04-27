@@ -32,7 +32,7 @@ python naive.py
 
 That verifies the dataset structure and metadata with the lowest possible cost.
 
-## 3. Run a small smoke test
+## 3. Run a small test
 
 ```bash
 python optical_flow.py --take 5

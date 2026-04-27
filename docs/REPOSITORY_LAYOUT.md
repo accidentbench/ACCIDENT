@@ -7,7 +7,6 @@ This repository is organized around three main workstreams.
 - `baselines/` - all baseline implementations, grouped by approach family
 - `generation/` - dataset generation pipelines
 - `dataset/` - local dataset cache and dataset setup notes
-- `scripts/` - small project-level utility scripts such as dataset download/setup
 - `docs/` - onboarding and repository navigation docs
 
 ## What to treat as source of truth
@@ -30,7 +29,6 @@ These are local artifacts and should not be committed:
 The large research components already have working internal paths and notebooks. This cleanup keeps those stable while making the top-level repo easier to enter:
 
 - project-wide docs live in `docs/`
-- project-wide helper scripts live in `scripts/`
 - data setup lives in `dataset/`
 - generation pipelines live in `generation/`
 

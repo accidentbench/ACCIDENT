@@ -4,12 +4,12 @@ Baseline solutions for the ACCIDENT competition: detecting **when**, **where**, 
 
 ## Baselines
 
-| Baseline | Temporal | Spatial | Type | Key idea |
-|---|---|---|---|---|
-| **Naive** | Video midpoint | Frame center | Majority class (`single`) | No computation, just defaults |
-| **Optical flow** | Change-point on motion magnitude | Frame center | Majority class (`single`) | Pixel motion spikes at collision |
-| **Bbox dynamics** | Change-point on total bbox area | Closest object pair midpoint | Majority class (`single`) | Object sizes change at collision |
-| **Ensemble** | Mean of optical flow + bbox dynamics | From bbox dynamics | Majority class (`single`) | Averages two temporal predictions |
+| Baseline          | Temporal                             | Spatial                      | Type                      | Key idea                          |
+|-------------------|--------------------------------------|------------------------------|---------------------------|-----------------------------------|
+| **Naive**         | Video midpoint                       | Frame center                 | Majority class (`single`) | No computation, just defaults     |
+| **Optical flow**  | Change-point on motion magnitude     | Frame center                 | Majority class (`single`) | Pixel motion spikes at collision  |
+| **Bbox dynamics** | Change-point on total bbox area      | Closest object pair midpoint | Majority class (`single`) | Object sizes change at collision  |
+| **Ensemble**      | Mean of optical flow + bbox dynamics | From bbox dynamics           | Majority class (`single`) | Averages two temporal predictions |
 
 ## Structure
 

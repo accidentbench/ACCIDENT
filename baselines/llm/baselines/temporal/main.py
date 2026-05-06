@@ -14,7 +14,7 @@ PROJECT_ROOT = SCRIPT_DIR.parents[3]
 sys.path.append(str(PROJECT_ROOT))
 sys.path.append(str(LLM_BASELINES_DIR))
 
-from dataset.accident_dataset import default_dataset_path, resolve_dataset_path
+from dataset.accident_dataset import get_dataset_paths, default_dataset_root, resolve_dataset_root
 from reasoning.utils import get_every_nth_frame
 from reasoning.qwen import QwenVLReasoner
 from reasoning.molmo import MolmoReasoner
@@ -83,16 +83,19 @@ def main():
     parser.add_argument(
         "--dataset-path",
         type=Path,
-        default=default_dataset_path(PROJECT_ROOT),
-        help="Path to dataset/ or dataset/real_videos (default: ../../dataset/real_videos from repo root)",
+        default=default_dataset_root(PROJECT_ROOT),
+        help="Path to dataset/ (default: ../../dataset)",
     )
 
     args = parser.parse_args()
 
     # load data
-    dataset_path = resolve_dataset_path(args.dataset_path)
-    df = pd.read_csv(dataset_path / "labels.csv")
-    df["video_path"] = (dataset_path / "videos").as_posix() + "/" + df["path"]
+    dataset_root = resolve_dataset_root(args.dataset_path)
+    _, metadata_path = get_dataset_paths(
+        dataset_root, kind="real"
+    )
+    df = pd.read_csv(metadata_path)
+    df["video_path"] = df["path"].apply(lambda x: os.path.join(dataset_root, x))
 
     # subset if requested
     if args.range is not None:
@@ -106,6 +109,7 @@ def main():
     else:
         model = QwenVLReasoner()
         name = "qwen"
+    print(df)
 
     run_temporal_reasoning(model=model, name=name, df=df)
 

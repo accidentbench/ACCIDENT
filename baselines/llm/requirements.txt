@@ -10,6 +10,8 @@ tokenizers==0.21.2
 einops>=0.8.1
 safetensors>=0.5.3
 tensorboard>=2.19
+scikit-learn
+qwen-vl-utils
 
 # ===== Data / Science =====
 numpy>=1.26

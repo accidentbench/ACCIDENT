@@ -1,7 +1,15 @@
+# =========================
+# General
+# =========================
 __pycache__/
 .ipynb_checkpoints/
-.idea/
 .DS_Store
+.idea/
+.venv/
+
+# =========================
+# Dataset (keep structure, ignore contents)
+# =========================
 dataset/*
 !dataset/.gitkeep
 !dataset/__init__.py
@@ -9,24 +17,46 @@ dataset/*
 !dataset/download_dataset.sh
 !dataset/requirements.txt
 !dataset/README.md
+
+# Keep directory structure
 !dataset/downloads/
 !dataset/raw/
 !dataset/real_videos/
 !dataset/synthetic_videos/
+
+# Ignore contents inside those dirs
 dataset/downloads/*
 dataset/raw/*
 dataset/real_videos/*
 dataset/synthetic_videos/*
+
+# Keep placeholders
 !dataset/downloads/.gitkeep
 !dataset/raw/.gitkeep
 !dataset/real_videos/.gitkeep
 !dataset/synthetic_videos/.gitkeep
+
+# =========================
+# Baselines - Heuristic
+# =========================
 baselines/heuristic/inference-yolo11x/
 baselines/heuristic/optical_flow.pkl
-baselines/heuristic/output_*.csv
-baselines/llm/baselines/temporal/results/
-baselines/llm/baselines/spatial/results/
-baselines/llm/baselines/classification/results/
-baselines/llm/baselines/temporal/progress_*.log
+baselines/heuristic/output*.csv
+baselines/heuristic/submission.csv
+baselines/heuristic/*.pt
 
+# =========================
+# Baselines - LLM
+# =========================
+baselines/llm/**/results/
+baselines/llm/**/progress_*.log
+
+# =========================
+# Misc
+# =========================
 AGENTS.md
+
+# =========================================================
+# CARLA Simulation (generation/carla-simulation)
+# =========================================================
+generation/carla-simulation/out/
